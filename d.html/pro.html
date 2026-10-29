@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="uz" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOTBUC SOTUW PRO - Noutbuklar Do'koni</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Page Transition FX */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .page-section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Navigation active underline glow */
+        .nav-btn.active {
+            background-color: #4f46e5;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <!-- Toast Notification Overlay -->
+    <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full"></div>
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-indigo-700 via-purple-700 to-indigo-900 text-white text-xs py-2 px-4 text-center font-medium shadow-md">
+        <div class="container mx-auto flex justify-between items-center px-2">
+            <span class="flex items-center gap-2">
+                <i class="fa-solid fa-truck-fast text-amber-300"></i>
+                <span class="hidden md:inline">O'zbekiston bo'ylab mutlaqo</span> 
+                <strong class="text-amber-300 uppercase tracking-wide">BEPUL yetkazib berish!</strong>
+            </span>
+            <div class="flex items-center gap-4 text-xs">
+                <a href="tel:+998712000099" class="hover:text-amber-300 transition flex items-center gap-1 font-semibold">
+                    <i class="fa-solid fa-phone"></i> +998 (71) 200-00-99
+                </a>
+                <span class="hidden sm:inline text-slate-400">|</span>
+                <span class="hidden sm:inline flex items-center gap-1 text-emerald-300">
+                    <i class="fa-solid fa-shield-halved"></i> 1 Yillik Kafolat
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            
+            <!-- Brand Logo -->
+            <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center gap-3 group shrink-0">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition duration-300">
+                    <i class="fa-solid fa-laptop text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-black text-xl tracking-tight bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+                            NOTBUC SOTUW
+                        </span>
+                        <span class="bg-indigo-600 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded tracking-wider">PRO</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 font-medium">Professional Noutbuklar Markazi</p>
+                </div>
+            </a>
+
+            <!-- 3 Main Page Navigation Buttons -->
+            <nav class="hidden md:flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800/80">
+                <button onclick="navigateTo('home')" id="nav-home" class="nav-btn active px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-house"></i> 1. Bosh sahifa
+                </button>
+                <button onclick="navigateTo('catalog')" id="nav-catalog" class="nav-btn px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-border-all"></i> 2. Notbuklar Katalogi
+                </button>
+                <button onclick="navigateTo('checkout')" id="nav-checkout" class="nav-btn px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white relative">
+                    <i class="fa-solid fa-cart-check"></i> 3. Buyurtma rasmiylashtirish
+                    <span id="selectedProductDot" class="hidden w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                </button>
+            </nav>
+
+            <!-- Quick Selected Item Indicator / Action -->
+            <div class="flex items-center gap-3">
+                <button onclick="navigateTo('checkout')" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-md shadow-indigo-600/30">
+                    <i class="fa-solid fa-bag-shopping text-sm"></i>
+                    <span class="hidden sm:inline">Tanlangan:</span>
+                    <span id="headerSelectedLaptopName" class="text-amber-300 max-w-[100px] truncate font-extrabold">Tanlanmagan</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Sticky Bottom Navigation -->
+        <div class="md:hidden flex border-t border-slate-800 bg-slate-900 justify-around p-2">
+            <button onclick="navigateTo('home')" id="mob-nav-home" class="flex flex-col items-center gap-1 text-[11px] text-indigo-400 font-bold p-1">
+                <i class="fa-solid fa-house text-base"></i> Bosh sahifa
+            </button>
+            <button onclick="navigateTo('catalog')" id="mob-nav-catalog" class="flex flex-col items-center gap-1 text-[11px] text-slate-400 font-bold p-1">
+                <i class="fa-solid fa-border-all text-base"></i> Katalog
+            </button>
+            <button onclick="navigateTo('checkout')" id="mob-nav-checkout" class="flex flex-col items-center gap-1 text-[11px] text-slate-400 font-bold p-1">
+                <i class="fa-solid fa-cart-shopping text-base"></i> Buyurtma
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1">
+
+        <!-- ==================== SAHIFA 1: BOSH SAHIFA ==================== -->
+        <section id="page-home" class="page-section active">
+            
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-b from-slate-900 via-indigo-950/40 to-slate-950 py-12 md:py-20 px-4 overflow-hidden border-b border-slate-800/80">
+                <div class="absolute -top-20 -left-20 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute top-1/2 -right-20 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                    <div class="lg:col-span-7 space-y-5 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
+                            <i class="fa-solid fa-bolt text-amber-400"></i> O'zbekistondagi №1 Zamonaviy Noutbuklar Do'koni
+                        </div>
+                        <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">
+                            O'yin, Dasturlash va Ish uchun <span class="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">Ideal Noutbukni</span> Tanlang!
+                        </h1>
+                        <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                            Bizda eng so'nggi rusumdagi original Apple MacBook, ASUS ROG, Lenovo Legion, HP va Dell noutbuklari rasmiy kafolat bilan mavjud. Noutbukni tanlang va bir necha sekundda buyurtma bering!
+                        </p>
+
+                        <div class="pt-2 flex flex-wrap gap-3 justify-center lg:justify-start">
+                            <button onclick="navigateTo('catalog')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-indigo-600/30 text-sm">
+                                <i class="fa-solid fa-store"></i> Katalogga O'tish va Tanlash
+                            </button>
+                            <button onclick="selectLaptopAndCheckout('1')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-emerald-600/20 text-sm">
+                                <i class="fa-solid fa-fire"></i> Hafta Xiti — ASUS ROG Sotib Olish
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hero Banner Product Showcase -->
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="w-full max-w-md bg-gradient-to-br from-indigo-900/40 via-slate-900 to-purple-900/40 border border-indigo-500/30 rounded-2xl p-6 shadow-2xl relative overflow-hidden group">
+                            <div class="absolute top-3 right-3 bg-rose-500 text-white text-xs font-extrabold px-3 py-1 rounded-full animate-pulse">
+                                TOP AKSIYA
+                            </div>
+                            <span class="text-xs font-bold text-indigo-300 uppercase tracking-wider block mb-1">Eng ko'p sotilgan</span>
+                            <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition">ASUS ROG Strix G16 (2024)</h3>
+                            <p class="text-xs text-slate-400 mt-1">i7-13650HX | 16GB RAM | 1TB SSD | RTX 4060 8GB</p>
+                            
+                            <div class="my-4 overflow-hidden rounded-xl bg-slate-950/60 p-2 flex items-center justify-center border border-slate-800">
+                                <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=600&q=80" 
+                                     alt="ASUS ROG" class="h-44 object-contain group-hover:scale-105 transition duration-500">
+                            </div>
+
+                            <div class="flex items-baseline gap-3 mb-4">
+                                <span class="text-2xl font-black text-emerald-400">17 800 000 so'm</span>
+                                <span class="text-xs text-slate-500 line-through">19 200 000 so'm</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="openProductModal('1')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-circle-info"></i> Batafsil
+                                </button>
+                                <button onclick="selectLaptopAndCheckout('1')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/30">
+                                    <i class="fa-solid fa-cart-shopping"></i> Sotib Olish
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advantages Section -->
+            <div class="container mx-auto px-4 py-12">
+                <div class="text-center max-w-xl mx-auto mb-10">
+                    <h2 class="text-2xl font-black text-white">Nega Aynan NOTBUC SOTUW PRO?</h2>
+                    <p class="text-slate-400 text-xs mt-1">Mijozlarimizga yaratilgan qulayliklar va rasmiy kafolatlar</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center space-y-3 hover:border-indigo-500/40 transition">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-shield-check"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm">1 Yillik Rasmiy Kafolat</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Barcha noutbuklar 100% original va ishlab chiqaruvchi kafolati bilan beriladi.</p>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center space-y-3 hover:border-indigo-500/40 transition">
+                        <div class="w-12 h-12 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm">Tezkor Yetkazib Berish</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Toshkent bo'ylab 3 soatda, viloyatlarga 24 soat ichida uyingizgacha bepul yetkazamiz.</p>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center space-y-3 hover:border-indigo-500/40 transition">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm">Qulay To'lov Usullari</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Click, Payme, Naqd pul yoki bo'lib to'lash (Nasiya) orqali to'lash imkoniyati.</p>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center space-y-3 hover:border-indigo-500/40 transition">
+                        <div class="w-12 h-12 rounded-xl bg-amber-600/20 text-amber-400 flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm">24/7 Professional Yordam</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Mutaxassislarimiz sizga mos noutbukni tanlashda bepul konsultatsiya beradi.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Laptops Carousel/Grid Preview -->
+            <div class="container mx-auto px-4 py-8">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h2 class="text-2xl font-black text-white">Eng Xaridorgir Modellar</h2>
+                        <p class="text-slate-400 text-xs mt-1">Sotuvda eng ko'p baholangan va talab yuqori bo'lgan noutbuklar</p>
+                    </div>
+                    <button onclick="navigateTo('catalog')" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1">
+                        Barcha Katalogni Ko'rish <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div id="homeFeaturedGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Dynamic rendering via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SAHIFA 2: NOTBUKLAR KATALOGI ==================== -->
+        <section id="page-catalog" class="page-section">
+            <div class="container mx-auto px-4 py-8">
+                
+                <!-- Catalog Title Header -->
+                <div class="mb-8 text-center md:text-left">
+                    <h1 class="text-3xl font-black text-white flex items-center justify-center md:justify-start gap-3">
+                        <i class="fa-solid fa-laptop-code text-indigo-400"></i> Notbuklar Katalogi
+                    </h1>
+                    <p class="text-slate-400 text-xs mt-1">Har qanday ehtiyoj uchun xususiyatlari va rasmlari bilan to'liq noutbuklar ro'yxati</p>
+                </div>
+
+                <!-- Filter & Search Toolbar -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 mb-8 space-y-4">
+                    
+                    <!-- Search Input & Sorting Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 relative">
+                            <input type="text" id="searchInput" placeholder="Noutbuk nomi, i7, M3, RTX 4060, 16GB RAM bo'yicha izlash..." 
+                                   class="w-full bg-slate-950 border border-slate-700 text-slate-100 rounded-xl pl-11 pr-10 py-3 text-xs focus:outline-none focus:border-indigo-500">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+                            <button id="clearSearchBtn" class="hidden absolute right-3 top-3.5 text-slate-400 hover:text-white text-xs">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+
+                        <div class="md:col-span-4 flex items-center gap-2">
+                            <label for="sortSelect" class="text-xs text-slate-400 font-semibold whitespace-nowrap">Saralash:</label>
+                            <select id="sortSelect" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-3 focus:outline-none focus:border-indigo-500 font-medium">
+                                <option value="popular">Ommabopligi bo'yicha</option>
+                                <option value="price-asc">Narx: Arzondan qimmatga</option>
+                                <option value="price-desc">Narx: Qimmatdan arzoniga</option>
+                                <option value="rating">Reytingi yuqori</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Brand Filters -->
+                    <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs pt-2 border-t border-slate-800/80">
+                        <span class="text-slate-400 font-semibold shrink-0 mr-1"><i class="fa-solid fa-filter text-indigo-400"></i> Brendlar:</span>
+                        <button data-brand="all" class="brand-btn active bg-indigo-600 text-white px-3.5 py-1.5 rounded-lg font-bold transition">Barchasi</button>
+                        <button data-brand="Apple" class="brand-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-bold transition">Apple</button>
+                        <button data-brand="ASUS" class="brand-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-bold transition">ASUS</button>
+                        <button data-brand="Lenovo" class="brand-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-bold transition">Lenovo</button>
+                        <button data-brand="HP" class="brand-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-bold transition">HP</button>
+                        <button data-brand="Acer" class="brand-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-bold transition">Acer</button>
+                        <button data-brand="Dell" class="brand-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-bold transition">Dell</button>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div id="catalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Rendered dynamically -->
+                </div>
+
+                <!-- Catalog Empty State -->
+                <div id="catalogEmpty" class="hidden py-16 text-center space-y-4">
+                    <div class="w-16 h-16 bg-slate-800 text-slate-500 rounded-full flex items-center justify-center mx-auto text-2xl">
+                        <i class="fa-solid fa-laptop-slash"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Siz izlagan mezon bo'yicha noutbuk topilmadi</h3>
+                    <p class="text-slate-400 text-xs">Qidiruv so'rovini yoki brend filtrini o'zgartirib ko'ring.</p>
+                    <button onclick="resetCatalogFilters()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">
+                        Filtrlarni Tozalash
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SAHIFA 3: BUYURTMA RASMIYLASHTIRISH ==================== -->
+        <section id="page-checkout" class="page-section">
+            <div class="container mx-auto px-4 py-8">
+                
+                <div class="mb-8 text-center md:text-left">
+                    <h1 class="text-3xl font-black text-white flex items-center justify-center md:justify-start gap-3">
+                        <i class="fa-solid fa-cart-shopping text-emerald-400"></i> Buyurtmani Rasmiylashtirish
+                    </h1>
+                    <p class="text-slate-400 text-xs mt-1">Tanlangan noutbuk ma'lumotlarini tekshiring va yetkazib berish manzilini kiriting</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    
+                    <!-- Left: Selected Product Summary Display -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-xl">
+                            <div class="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                                <span>Tanlangan Noutbuk:</span>
+                                <span class="bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded border border-indigo-800 text-[10px]">Tayyor</span>
+                            </div>
+
+                            <div id="checkoutProductCard">
+                                <!-- Dynamic rendering of selected laptop -->
+                            </div>
+                        </div>
+
+                        <!-- Safety Banner -->
+                        <div class="bg-emerald-950/40 border border-emerald-800/50 rounded-2xl p-4 flex items-start gap-3 text-xs text-slate-300">
+                            <i class="fa-solid fa-shield-check text-emerald-400 text-xl mt-0.5"></i>
+                            <div>
+                                <strong class="text-white block font-semibold mb-0.5">Xavfsiz va Ishonchli Buyurtma</strong>
+                                Buyurtma tasdiqlangandan so'ng xodimlarimiz 15 daqiqa ichida siz bilan telefon orqali bog'lanib, barcha tafsilotlarni aniqlashtirishadi.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Customer Info Order Form -->
+                    <div class="lg:col-span-7">
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
+                            <h3 class="text-lg font-bold text-white mb-4 pb-3 border-b border-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-user-pen text-indigo-400"></i> Xaridor Ma'lumotlari
+                            </h3>
+
+                            <form id="checkoutForm" onsubmit="handleCheckoutFormSubmit(event)" class="space-y-4">
+                                
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">To'liq ismingiz *</label>
+                                    <input type="text" id="custName" required placeholder="Masalan: Jasur Rustamov" 
+                                           class="w-full bg-slate-950 border border-slate-700 text-slate-100 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-indigo-500 font-medium">
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Telefon raqamingiz *</label>
+                                        <input type="tel" id="custPhone" required placeholder="+998 (90) 123-45-67" 
+                                               class="w-full bg-slate-950 border border-slate-700 text-slate-100 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-indigo-500 font-medium">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Viloyat / Shahar *</label>
+                                        <select id="custRegion" class="w-full bg-slate-950 border border-slate-700 text-slate-100 rounded-xl px-3.5 py-3 text-xs focus:outline-none focus:border-indigo-500 font-medium">
+                                            <option value="Toshkent shahri">Toshkent shahri</option>
+                                            <option value="Toshkent viloyati">Toshkent viloyati</option>
+                                            <option value="Samarqand">Samarqand</option>
+                                            <option value="Farg'ona">Farg'ona</option>
+                                            <option value="Andijon">Andijon</option>
+                                            <option value="Namangan">Namangan</option>
+                                            <option value="Buxoro">Buxoro</option>
+                                            <option value="Xorazm">Xorazm</option>
+                                            <option value="Kashqadaryo">Kashqadaryo</option>
+                                            <option value="Surxondaryo">Surxondaryo</option>
+                                            <option value="Navoiy">Navoiy</option>
+                                            <option value="Jizzax">Jizzax</option>
+                                            <option value="Sirdaryo">Sirdaryo</option>
+                                            <option value="Qoraqalpog'iston">Qoraqalpog'iston R.</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Aniq manzil (Tuman, Ko'cha, Uy) *</label>
+                                    <input type="text" id="custAddress" required placeholder="Masalan: Chilonzor tumani, Qatortol ko'chasi 15-uy" 
+                                           class="w-full bg-slate-950 border border-slate-700 text-slate-100 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-indigo-500 font-medium">
+                                </div>
+
+                                <!-- Payment Options Radios -->
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-2">To'lov turini tanlang *</label>
+                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                        <label class="border border-slate-700 rounded-xl p-3 flex flex-col items-center gap-1 cursor-pointer bg-slate-950 hover:border-indigo-500 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-950/40 transition">
+                                            <input type="radio" name="paymentMethod" value="Click" checked class="hidden">
+                                            <i class="fa-solid fa-mobile-screen-button text-indigo-400 text-lg"></i>
+                                            <span class="text-xs font-bold text-slate-200">Click</span>
+                                        </label>
+                                        <label class="border border-slate-700 rounded-xl p-3 flex flex-col items-center gap-1 cursor-pointer bg-slate-950 hover:border-indigo-500 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-950/40 transition">
+                                            <input type="radio" name="paymentMethod" value="Payme" class="hidden">
+                                            <i class="fa-solid fa-wallet text-cyan-400 text-lg"></i>
+                                            <span class="text-xs font-bold text-slate-200">Payme</span>
+                                        </label>
+                                        <label class="border border-slate-700 rounded-xl p-3 flex flex-col items-center gap-1 cursor-pointer bg-slate-950 hover:border-indigo-500 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-950/40 transition">
+                                            <input type="radio" name="paymentMethod" value="Naqd pul" class="hidden">
+                                            <i class="fa-solid fa-money-bill-wave text-emerald-400 text-lg"></i>
+                                            <span class="text-xs font-bold text-slate-200">Naqd Pul</span>
+                                        </label>
+                                        <label class="border border-slate-700 rounded-xl p-3 flex flex-col items-center gap-1 cursor-pointer bg-slate-950 hover:border-indigo-500 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-950/40 transition">
+                                            <input type="radio" name="paymentMethod" value="Bo'lib to'lash" class="hidden">
+                                            <i class="fa-solid fa-clock-rotate-left text-amber-400 text-lg"></i>
+                                            <span class="text-xs font-bold text-slate-200">Nasiya</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Qo'shimcha izoh (Ixtiyoriy)</label>
+                                    <textarea id="custNote" rows="2" placeholder="Masalan: Soat 17:00 dan keyin olib kelishingizni so'rayman..." 
+                                              class="w-full bg-slate-950 border border-slate-700 text-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-indigo-500 font-medium"></textarea>
+                                </div>
+
+                                <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                    <div>
+                                        <span class="text-xs text-slate-400 block">Jami To'lanadigan Summa:</span>
+                                        <span id="checkoutFormTotalPrice" class="text-2xl font-black text-emerald-400">0 so'm</span>
+                                    </div>
+                                    <button type="submit" id="submitOrderBtn" class="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold px-8 py-3.5 rounded-xl transition duration-300 shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-circle-check text-base"></i> Buyurtmani Tasdiqlash
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Detailed Specifications View Modal -->
+    <div id="productModalBackdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-full flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="productModalContent" class="p-6">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success Receipt Modal -->
+    <div id="orderSuccessModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl relative overflow-hidden">
+            <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-3xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            
+            <h3 class="text-2xl font-black text-white">Buyurtma Qabul Qilindi!</h3>
+            <p class="text-slate-300 text-xs leading-relaxed">
+                Rahmat! Buyurtmangiz <strong id="successOrderId" class="text-indigo-400">#NSP-99210</strong> raqami bilan rasmiylashtirildi. Tez orada siz bilan bog'lanamiz.
+            </p>
+
+            <div class="bg-slate-950 p-4 rounded-xl text-left text-xs space-y-2 text-slate-300 border border-slate-800">
+                <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                    <span class="text-slate-400">Noutbuk:</span>
+                    <strong id="successLaptopName" class="text-indigo-300 text-right truncate max-w-[200px]">-</strong>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                    <span class="text-slate-400">Xaridor:</span>
+                    <strong id="successCustName" class="text-slate-100">-</strong>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                    <span class="text-slate-400">Telefon:</span>
+                    <strong id="successCustPhone" class="text-slate-100">-</strong>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                    <span class="text-slate-400">Manzil:</span>
+                    <strong id="successCustAddress" class="text-slate-100 text-right truncate max-w-[200px]">-</strong>
+                </div>
+                <div class="flex justify-between pt-1">
+                    <span class="text-slate-400">Jami To'lov:</span>
+                    <strong id="successTotalPrice" class="text-emerald-400 text-sm font-extrabold">-</strong>
+                </div>
+            </div>
+
+            <button onclick="closeSuccessModalAndGoHome()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition">
+                Bosh Sahifaga Qaytish
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 text-slate-400 text-xs py-8 mt-12">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">
+                    <i class="fa-solid fa-laptop text-xs"></i>
+                </div>
+                <span class="font-bold text-white">NOTBUC SOTUW PRO</span>
+                <span class="text-slate-500">| Zamonaviy Noutbuklar Baza</span>
+            </div>
+            <p class="text-slate-500 text-center">&copy; 2026 NOTBUC SOTUW PRO. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Database of Laptops
+        const PRODUCTS = [
+            {
+                id: '1',
+                name: 'ASUS ROG Strix G16 (2024)',
+                brand: 'ASUS',
+                price: 17800000,
+                oldPrice: 19200000,
+                rating: 4.9,
+                image: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=600&q=80',
+                badge: 'Hafta Xiti',
+                specs: {
+                    cpu: 'Intel Core i7-13650HX',
+                    ram: '16GB DDR5',
+                    storage: '1TB NVMe PCIe SSD',
+                    gpu: 'NVIDIA RTX 4060 8GB',
+                    screen: '16" FHD+ 165Hz IPS',
+                    os: 'Windows 11 Home'
+                }
+            },
+            {
+                id: '2',
+                name: 'Apple MacBook Air 15" M3',
+                brand: 'Apple',
+                price: 18500000,
+                oldPrice: 19800000,
+                rating: 5.0,
+                image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80',
+                badge: 'Yangi M3',
+                specs: {
+                    cpu: 'Apple M3 (8 CPU / 10 GPU)',
+                    ram: '16GB Unified RAM',
+                    storage: '512GB SSD',
+                    gpu: 'Apple 10-Core GPU',
+                    screen: '15.3" Liquid Retina',
+                    os: 'macOS Sonoma'
+                }
+            },
+            {
+                id: '3',
+                name: 'Lenovo Legion Pro 5 16"',
+                brand: 'Lenovo',
+                price: 21200000,
+                oldPrice: 22800000,
+                rating: 4.8,
+                image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80',
+                badge: 'Pro Gaming',
+                specs: {
+                    cpu: 'AMD Ryzen 7 7745HX',
+                    ram: '32GB DDR5',
+                    storage: '1TB NVMe SSD',
+                    gpu: 'NVIDIA RTX 4070 8GB',
+                    screen: '16" WQXGA 240Hz 500 nits',
+                    os: 'Windows 11 Pro'
+                }
+            },
+            {
+                id: '4',
+                name: 'HP Victus 15 Gaming',
+                brand: 'HP',
+                price: 9800000,
+                oldPrice: 10500000,
+                rating: 4.6,
+                image: 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=600&q=80',
+                badge: 'Hamyonbop',
+                specs: {
+                    cpu: 'Intel Core i5-13420H',
+                    ram: '16GB DDR4',
+                    storage: '512GB NVMe SSD',
+                    gpu: 'NVIDIA RTX 3050 6GB',
+                    screen: '15.6" FHD 144Hz IPS',
+                    os: 'Windows 11'
+                }
+            },
+            {
+                id: '5',
+                name: 'Acer Nitro V 15 (2024)',
+                brand: 'Acer',
+                price: 11400000,
+                oldPrice: 12200000,
+                rating: 4.7,
+                image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=600&q=80',
+                badge: 'Top Ommabop',
+                specs: {
+                    cpu: 'Intel Core i5-13420H',
+                    ram: '16GB DDR5',
+                    storage: '512GB SSD',
+                    gpu: 'NVIDIA RTX 4050 6GB',
+                    screen: '15.6" FHD 144Hz IPS',
+                    os: 'Windows 11'
+                }
+            },
+            {
+                id: '6',
+                name: 'Dell XPS 15 9530 OLED',
+                brand: 'Dell',
+                price: 29900000,
+                oldPrice: 32000000,
+                rating: 4.9,
+                image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=600&q=80',
+                badge: 'Premium OLED',
+                specs: {
+                    cpu: 'Intel Core i9-13900H',
+                    ram: '32GB DDR5',
+                    storage: '1TB PCIe 4.0 SSD',
+                    gpu: 'NVIDIA RTX 4060 8GB',
+                    screen: '15.6" 3.5K OLED Touch',
+                    os: 'Windows 11 Pro'
+                }
+            },
+            {
+                id: '7',
+                name: 'Apple MacBook Pro 16" M3 Max',
+                brand: 'Apple',
+                price: 42000000,
+                oldPrice: 45000000,
+                rating: 5.0,
+                image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80',
+                badge: 'Monster Power',
+                specs: {
+                    cpu: 'Apple M3 Max (14 CPU / 30 GPU)',
+                    ram: '36GB Unified RAM',
+                    storage: '1TB Superfast SSD',
+                    gpu: 'Integrated 30-Core GPU',
+                    screen: '16.2" Liquid Retina XDR 120Hz',
+                    os: 'macOS Sonoma'
+                }
+            },
+            {
+                id: '8',
+                name: 'ASUS Zenbook 14 OLED',
+                brand: 'ASUS',
+                price: 14900000,
+                oldPrice: 16000000,
+                rating: 4.8,
+                image: 'https://images.unsplash.com/photo-1544731612-de7f96afe55f?auto=format&fit=crop&w=600&q=80',
+                badge: 'Yengil Ultrabook',
+                specs: {
+                    cpu: 'Intel Core Ultra 7 155H',
+                    ram: '16GB LPDDR5X',
+                    storage: '1TB NVMe SSD',
+                    gpu: 'Intel Arc Graphics',
+                    screen: '14" 3K OLED 120Hz',
+                    os: 'Windows 11 Home'
+                }
+            }
+        ];
+
+        // Global State
+        let state = {
+            currentPage: 'home',
+            selectedLaptop: PRODUCTS[0], // Default laptop selected
+            brandFilter: 'all',
+            searchQuery: '',
+            sortBy: 'popular'
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFeaturedHomeProducts();
+            renderCatalogProducts();
+            updateCheckoutPageUI();
+            setupCatalogEventListeners();
+        });
+
+        // PAGE NAVIGATION LOGIC
+        function navigateTo(pageId) {
+            state.currentPage = pageId;
+
+            // Update Tab Sections
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(`page-${pageId}`).classList.add('active');
+
+            // Update Desktop Navbar Buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-indigo-600', 'text-white');
+                btn.classList.add('text-slate-400');
+            });
+            const activeBtn = document.getElementById(`nav-${pageId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.classList.remove('text-slate-400');
+            }
+
+            // Update Mobile Nav
+            ['home', 'catalog', 'checkout'].forEach(p => {
+                const mobBtn = document.getElementById(`mob-nav-${p}`);
+                if (mobBtn) {
+                    if (p === pageId) {
+                        mobBtn.classList.add('text-indigo-400');
+                        mobBtn.classList.remove('text-slate-400');
+                    } else {
+                        mobBtn.classList.remove('text-indigo-400');
+                        mobBtn.classList.add('text-slate-400');
+                    }
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // KEY FUNCTION: SELECT LAPTOP & GO TO CHECKOUT (PAGE 3)
+        function selectLaptopAndCheckout(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            state.selectedLaptop = product;
+            
+            // Update Top Header Indicator
+            document.getElementById('headerSelectedLaptopName').textContent = product.name;
+            document.getElementById('selectedProductDot').classList.remove('hidden');
+
+            // Render details into Checkout page form
+            updateCheckoutPageUI();
+
+            // Show Toast Notification
+            showToast(`"${product.name}" tanlandi! Buyurtma berish sahifasiga o'tildi.`, 'success');
+
+            // Seamlessly Switch to Page 3
+            navigateTo('checkout');
+        }
+
+        // UPDATE CHECKOUT PAGE CONTENT (PAGE 3)
+        function updateCheckoutPageUI() {
+            const container = document.getElementById('checkoutProductCard');
+            const laptop = state.selectedLaptop;
+
+            if (!laptop) return;
+
+            container.innerHTML = `
+                <div class="flex flex-col sm:flex-row items-center gap-4 border-b border-slate-800 pb-4 mb-4">
+                    <div class="w-full sm:w-32 h-32 bg-slate-950 rounded-xl p-2 flex items-center justify-center border border-slate-800 shrink-0">
+                        <img src="${laptop.image}" alt="${laptop.name}" class="max-h-full max-w-full object-contain">
+                    </div>
+                    <div class="space-y-1 text-center sm:text-left flex-1">
+                        <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">${laptop.brand}</span>
+                        <h3 class="font-bold text-white text-base leading-snug">${laptop.name}</h3>
+                        <div class="text-emerald-400 font-extrabold text-lg pt-1">
+                            ${formatPrice(laptop.price)} <span class="text-xs font-normal text-slate-400">so'm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2 text-xs text-slate-300">
+                    <div class="flex justify-between py-1 border-b border-slate-800/60">
+                        <span class="text-slate-400"><i class="fa-solid fa-microchip text-indigo-400 mr-1.5"></i> Protsessor:</span>
+                        <strong class="text-white">${laptop.specs.cpu}</strong>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-800/60">
+                        <span class="text-slate-400"><i class="fa-solid fa-memory text-purple-400 mr-1.5"></i> RAM:</span>
+                        <strong class="text-white">${laptop.specs.ram}</strong>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-800/60">
+                        <span class="text-slate-400"><i class="fa-solid fa-hard-drive text-emerald-400 mr-1.5"></i> SSD:</span>
+                        <strong class="text-white">${laptop.specs.storage}</strong>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-800/60">
+                        <span class="text-slate-400"><i class="fa-solid fa-tv text-amber-400 mr-1.5"></i> Ekran / GPU:</span>
+                        <strong class="text-white">${laptop.specs.screen}</strong>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 flex justify-between items-center text-xs">
+                    <span class="text-slate-400">Boshqa noutbuk tanlashni xohlaysizmi?</span>
+                    <button onclick="navigateTo('catalog')" class="text-indigo-400 hover:text-indigo-300 font-bold underline">
+                        Katalogga Qaytish
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('checkoutFormTotalPrice').textContent = `${formatPrice(laptop.price)} so'm`;
+            document.getElementById('headerSelectedLaptopName').textContent = laptop.name;
+        }
+
+        // RENDER HOME PAGE FEATURED PRODUCTS
+        function renderFeaturedHomeProducts() {
+            const container = document.getElementById('homeFeaturedGrid');
+            const featured = PRODUCTS.slice(0, 4);
+
+            container.innerHTML = featured.map(p => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between hover:border-indigo-500/50 transition duration-300 group shadow-lg">
+                    <div>
+                        <div class="relative h-40 bg-slate-950 rounded-xl p-3 flex items-center justify-center mb-3 border border-slate-800/80">
+                            <img src="${p.image}" alt="${p.name}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
+                            <span class="absolute top-2 left-2 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">${p.badge}</span>
+                        </div>
+                        <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">${p.brand}</span>
+                        <h3 class="font-bold text-white text-sm line-clamp-1 mt-0.5">${p.name}</h3>
+                        <p class="text-xs text-slate-400 mt-1">${p.specs.cpu} | ${p.specs.ram}</p>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-800">
+                        <div class="text-emerald-400 font-extrabold text-base mb-3">
+                            ${formatPrice(p.price)} <span class="text-xs text-slate-400 font-normal">so'm</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="openProductModal('${p.id}')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-2 rounded-xl transition">
+                                Batafsil
+                            </button>
+                            <button onclick="selectLaptopAndCheckout('${p.id}')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 rounded-xl transition shadow-md shadow-indigo-600/20">
+                                Sotib Olish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // RENDER CATALOG PRODUCTS (PAGE 2)
+        function renderCatalogProducts() {
+            const container = document.getElementById('catalogGrid');
+            const empty = document.getElementById('catalogEmpty');
+
+            let filtered = PRODUCTS.filter(p => {
+                if (state.brandFilter !== 'all' && p.brand !== state.brandFilter) return false;
+                if (state.searchQuery) {
+                    const q = state.searchQuery.toLowerCase();
+                    const matchName = p.name.toLowerCase().includes(q);
+                    const matchCpu = p.specs.cpu.toLowerCase().includes(q);
+                    const matchGpu = p.specs.gpu.toLowerCase().includes(q);
+                    if (!matchName && !matchCpu && !matchGpu) return false;
+                }
+                return true;
+            });
+
+            // Sorting
+            if (state.sortBy === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+            if (state.sortBy === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+            if (state.sortBy === 'rating') filtered.sort((a, b) => b.rating - a.rating);
+
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+
+            container.innerHTML = filtered.map(p => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between hover:border-indigo-500/50 transition duration-300 group shadow-lg">
+                    <div>
+                        <div class="relative h-44 bg-slate-950 rounded-xl p-3 flex items-center justify-center mb-3 border border-slate-800">
+                            <img src="${p.image}" alt="${p.name}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
+                            <span class="absolute top-2.5 left-2.5 bg-indigo-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded shadow">${p.badge}</span>
+                            <span class="absolute top-2.5 right-2.5 text-amber-400 text-xs font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-star"></i> ${p.rating}
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-1">
+                            <span>${p.brand}</span>
+                            <span class="text-emerald-400 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-800">Sotuvda bor</span>
+                        </div>
+                        <h3 class="font-bold text-white text-base line-clamp-1">${p.name}</h3>
+
+                        <div class="mt-3 grid grid-cols-2 gap-1.5 text-[11px] text-slate-300 font-medium">
+                            <div class="bg-slate-950 px-2 py-1 rounded-lg border border-slate-800 truncate">
+                                <i class="fa-solid fa-microchip text-indigo-400 mr-1"></i> ${p.specs.cpu.split(' ')[0]} ${p.specs.cpu.split(' ')[1] || ''}
+                            </div>
+                            <div class="bg-slate-950 px-2 py-1 rounded-lg border border-slate-800 truncate">
+                                <i class="fa-solid fa-memory text-purple-400 mr-1"></i> ${p.specs.ram}
+                            </div>
+                            <div class="bg-slate-950 px-2 py-1 rounded-lg border border-slate-800 truncate">
+                                <i class="fa-solid fa-hard-drive text-emerald-400 mr-1"></i> ${p.specs.storage}
+                            </div>
+                            <div class="bg-slate-950 px-2 py-1 rounded-lg border border-slate-800 truncate">
+                                <i class="fa-solid fa-tv text-amber-400 mr-1"></i> ${p.specs.gpu.includes('RTX') ? 'RTX ' + p.specs.gpu.split('RTX ')[1].split(' ')[0] : 'GPU'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-800">
+                        <div class="flex items-baseline justify-between mb-3">
+                            <div class="text-emerald-400 font-black text-lg">
+                                ${formatPrice(p.price)} <span class="text-xs text-slate-400 font-normal">so'm</span>
+                            </div>
+                            ${p.oldPrice ? `<div class="text-xs text-slate-500 line-through">${formatPrice(p.oldPrice)}</div>` : ''}
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="openProductModal('${p.id}')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-circle-info"></i> Batafsil
+                            </button>
+                            <button onclick="selectLaptopAndCheckout('${p.id}')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1 shadow-md shadow-indigo-600/30">
+                                <i class="fa-solid fa-cart-shopping"></i> Sotib Olish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // CATALOG EVENT LISTENERS
+        function setupCatalogEventListeners() {
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+
+            searchInput.addEventListener('input', (e) => {
+                state.searchQuery = e.target.value.trim();
+                clearBtn.classList.toggle('hidden', state.searchQuery === '');
+                renderCatalogProducts();
+            });
+
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                state.searchQuery = '';
+                clearBtn.classList.add('hidden');
+                renderCatalogProducts();
+            });
+
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.brand-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-indigo-600', 'text-white');
+                        b.classList.add('bg-slate-800', 'text-slate-300');
+                    });
+                    btn.classList.add('active', 'bg-indigo-600', 'text-white');
+                    btn.classList.remove('bg-slate-800', 'text-slate-300');
+
+                    state.brandFilter = btn.dataset.brand;
+                    renderCatalogProducts();
+                });
+            });
+
+            document.getElementById('sortSelect').addEventListener('change', (e) => {
+                state.sortBy = e.target.value;
+                renderCatalogProducts();
+            });
+        }
+
+        function resetCatalogFilters() {
+            state.brandFilter = 'all';
+            state.searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            
+            document.querySelectorAll('.brand-btn').forEach((b, idx) => {
+                if (idx === 0) {
+                    b.classList.add('active', 'bg-indigo-600', 'text-white');
+                    b.classList.remove('bg-slate-800', 'text-slate-300');
+                } else {
+                    b.classList.remove('active', 'bg-indigo-600', 'text-white');
+                    b.classList.add('bg-slate-800', 'text-slate-300');
+                }
+            });
+
+            renderCatalogProducts();
+        }
+
+        // PRODUCT DETAIL MODAL
+        function openProductModal(productId) {
+            const p = PRODUCTS.find(item => item.id === productId);
+            if (!p) return;
+
+            const modal = document.getElementById('productModalBackdrop');
+            const content = document.getElementById('productModalContent');
+
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col items-center justify-center">
+                        <img src="${p.image}" alt="${p.name}" class="max-h-56 object-contain mb-3">
+                        <div class="text-xs text-emerald-400 font-bold bg-emerald-950/60 px-3 py-1 rounded border border-emerald-800">
+                            <i class="fa-solid fa-shield-check mr-1"></i> 1 Yillik Rasmiy Kafolat
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <span class="text-xs font-bold text-indigo-400 uppercase tracking-wider">${p.brand}</span>
+                        <h2 class="text-xl font-bold text-white">${p.name}</h2>
+                        
+                        <div class="text-2xl font-black text-emerald-400">
+                            ${formatPrice(p.price)} <span class="text-xs font-normal text-slate-400">so'm</span>
+                        </div>
+
+                        <div class="space-y-1.5 text-xs text-slate-300 pt-2 border-t border-slate-800">
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">Protsessor:</span>
+                                <strong class="text-white">${p.specs.cpu}</strong>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">RAM:</span>
+                                <strong class="text-white">${p.specs.ram}</strong>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">Doimiy Xotira:</span>
+                                <strong class="text-white">${p.specs.storage}</strong>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">Video karta:</span>
+                                <strong class="text-white">${p.specs.gpu}</strong>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">Ekran:</span>
+                                <strong class="text-white">${p.specs.screen}</strong>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">OS:</span>
+                                <strong class="text-white">${p.specs.os}</strong>
+                            </div>
+                        </div>
+
+                        <button onclick="closeProductModal(); selectLaptopAndCheckout('${p.id}');" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30">
+                            <i class="fa-solid fa-cart-shopping"></i> Ushbu Noutbukni Sotib Olish
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModalBackdrop').classList.add('hidden');
+        }
+
+        // SUBMIT CHECKOUT ORDER
+        function handleCheckoutFormSubmit(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const region = document.getElementById('custRegion').value;
+            const address = document.getElementById('custAddress').value;
+            const laptop = state.selectedLaptop;
+
+            const orderId = `#NSP-${Math.floor(10000 + Math.random() * 90000)}`;
+
+            document.getElementById('successOrderId').textContent = orderId;
+            document.getElementById('successLaptopName').textContent = laptop.name;
+            document.getElementById('successCustName').textContent = name;
+            document.getElementById('successCustPhone').textContent = phone;
+            document.getElementById('successCustAddress').textContent = `${region}, ${address}`;
+            document.getElementById('successTotalPrice').textContent = `${formatPrice(laptop.price)} so'm`;
+
+            document.getElementById('orderSuccessModal').classList.remove('hidden');
+        }
+
+        function closeSuccessModalAndGoHome() {
+            document.getElementById('orderSuccessModal').classList.add('hidden');
+            document.getElementById('checkoutForm').reset();
+            navigateTo('home');
+        }
+
+        // UTILITY FUNCTIONS
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+
+            const bgClass = type === 'success' ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white';
+
+            toast.className = `${bgClass} p-3.5 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-bold pointer-events-auto transform transition duration-300 translate-y-2 opacity-0`;
+            toast.innerHTML = `
+                <i class="fa-solid fa-circle-check text-base"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>         
